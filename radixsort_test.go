@@ -25,6 +25,16 @@ func TestIntSliceDigit(t *testing.T) {
 	}
 }
 
+func TestAmountDigits(t *testing.T) {
+	nums := IntRadixSlice([]int{1234, 13, 9, 123456789})
+
+	assert := assert.New(t)
+	assert.Equal(nums.AmountDigits(0), 4)
+	assert.Equal(nums.AmountDigits(1), 2)
+	assert.Equal(nums.AmountDigits(2), 1)
+	assert.Equal(nums.AmountDigits(3), 9)
+}
+
 func TestRadixSort(t *testing.T) {
 
 	RadixSort(IntRadixSlice([]int{89, 5, 1, 23, 47, 11}))

@@ -24,6 +24,10 @@ func (s IntRadixSlice) Digit(i, pos int) int {
 	return (s[i] / int(math.Pow10(pos-1))) % 10
 }
 
+func (s IntRadixSlice) AmountDigits(i int) int {
+	return int(math.Log10(float64(s[i]))) + 1
+}
+
 //
 func RadixSort(data sort.Interface) {
 	fmt.Println(data)
