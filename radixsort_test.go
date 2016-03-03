@@ -37,6 +37,6 @@ func TestAmountDigits(t *testing.T) {
 
 func TestRadixSort(t *testing.T) {
 
-	RadixSort(IntRadixSlice([]int{89, 5, 1, 23, 47, 11}))
+	RadixSort(IntRadixSlice([]int{89, 5, 1, 623, 47, 11}))
 
 }
