@@ -8,7 +8,8 @@ import (
 
 type RadixInterface interface {
 	sort.Interface
-	Digit(pos int) int
+	Digit(index, pos int) int
+	AmountDigits(index int) int
 }
 
 type IntRadixSlice []int
@@ -29,6 +30,18 @@ func (s IntRadixSlice) AmountDigits(i int) int {
 }
 
 //
-func RadixSort(data sort.Interface) {
-	fmt.Println(data)
+func RadixSort(data RadixInterface) {
+	var max_digit int
+
+	for ix, size := 0, data.Len(); ix < size; ix++ {
+		if ad := data.AmountDigits(ix); ad > max_digit {
+			max_digit = ad
+		}
+	}
+
+	radixSort(data, max_digit)
+}
+
+func radixSort(data RadixInterface, digit int) {
+
 }
