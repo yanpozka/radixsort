@@ -1,7 +1,6 @@
 package radixsort
 
 import (
-	"fmt"
 	"math"
 	"sort"
 )
