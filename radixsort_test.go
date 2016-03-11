@@ -7,7 +7,7 @@ import (
 )
 
 func TestIntSliceDigit(t *testing.T) {
-	nums := IntRadixSlice([]int{6, 123, 29, 0, 9876})
+	nums := []int{6, 123, 29, 0, 9876}
 
 	expected := [][]int{
 		//1  2  3  4
@@ -20,23 +20,29 @@ func TestIntSliceDigit(t *testing.T) {
 
 	for ix := range nums {
 		for pos, result := range expected[ix] {
-			assert.Equal(t, result, nums.Digit(ix, pos+1), "")
+			assert.Equal(t, result, digit(nums, ix, pos+1), "")
 		}
 	}
 }
 
 func TestAmountDigits(t *testing.T) {
-	nums := IntRadixSlice([]int{1234, 13, 9, 123456789})
+	nums := []int{1234, 13, 9, 123456789}
 
 	assert := assert.New(t)
-	assert.Equal(nums.AmountDigits(0), 4)
-	assert.Equal(nums.AmountDigits(1), 2)
-	assert.Equal(nums.AmountDigits(2), 1)
-	assert.Equal(nums.AmountDigits(3), 9)
+	assert.Equal(amountDigits(nums, 0), 4)
+	assert.Equal(amountDigits(nums, 1), 2)
+	assert.Equal(amountDigits(nums, 2), 1)
+	assert.Equal(amountDigits(nums, 3), 9)
 }
 
 func TestRadixSort(t *testing.T) {
+	a := []int{89, 5, 1, 623, 47, 11}
+	RadixSort(a)
 
-	RadixSort(IntRadixSlice([]int{89, 5, 1, 623, 47, 11}))
+	assert.Equal(t, []int{1, 5, 11, 47, 89, 623}, a, "Array A should be ordered")
 
+	b := []int{1, 12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+	RadixSort(b)
+
+	assert.Equal(t, []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 12}, b, "Array b should be ordered")
 }
