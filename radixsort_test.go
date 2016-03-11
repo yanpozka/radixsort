@@ -1,10 +1,29 @@
 package radixsort
 
 import (
+	"math/rand"
+	"sort"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
+
+const oneMillion = 1000000
+
+var arrayRadixSort, arraySort []int
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+
+	arrayRadixSort = make([]int, oneMillion)
+	arraySort = make([]int, oneMillion)
+
+	for ix := 0; ix < oneMillion; ix++ {
+		arraySort[ix] = rand.Int() % 100000
+		arrayRadixSort[ix] = arraySort[ix]
+	}
+}
 
 func TestIntSliceDigit(t *testing.T) {
 	nums := []int{6, 123, 29, 0, 9876}
@@ -45,4 +64,20 @@ func TestRadixSort(t *testing.T) {
 	RadixSort(b)
 
 	assert.Equal(t, []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 12}, b, "Array b should be ordered")
+
+	start := time.Now()
+	RadixSort(arrayRadixSort)
+	t.Logf("%v", time.Now().Sub(start))
+
+	start = time.Now()
+	sort.Sort(sort.IntSlice(arraySort))
+	t.Logf("%v", time.Now().Sub(start))
+}
+
+func BenchmarkRadixSort(b *testing.B) {
+	RadixSort(arrayRadixSort)
+}
+
+func BenchmarkPkgSort(b *testing.B) {
+	sort.Sort(sort.IntSlice(arraySort))
 }
