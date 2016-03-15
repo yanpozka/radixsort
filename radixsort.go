@@ -3,7 +3,15 @@ package radixsort
 import (
 	"container/list"
 	"math"
+	"sort"
+	"sync"
 )
+
+var mutex *sync.Mutex
+
+func init() {
+	mutex = new(sync.Mutex)
+}
 
 func digit(s []int, i, pos int) int {
 	if pos <= 0 || pos > 70 {
@@ -18,6 +26,10 @@ func amountDigits(s []int, i int) int {
 
 //
 func RadixSort(data []int) {
+	if sort.IntsAreSorted(data) {
+		return
+	}
+
 	var max_digit int
 
 	for ix, size := 0, len(data); ix < size; ix++ {
@@ -30,15 +42,14 @@ func RadixSort(data []int) {
 }
 
 func radixSort(data []int, start, end, position int) {
-	size := end - start
 
-	if position == 0 || size <= 1 {
+	if position == 0 || end-start <= 1 {
 		return
 	}
 
 	var bucket [10]*list.List
 
-	for ix := 0; ix < size; ix++ {
+	for ix := start; ix < end; ix++ {
 		d := digit(data, ix, position)
 
 		if bucket[d] == nil {
@@ -48,19 +59,30 @@ func radixSort(data []int, start, end, position int) {
 		bucket[d].PushBack(data[ix])
 	}
 
+	wg := new(sync.WaitGroup)
+
 	prev, count := start, start
 	for _, q := range bucket {
 		if q == nil {
 			continue
 		}
 
+		wg.Add(1)
 		for elem := q.Front(); elem != nil; elem = elem.Next() {
+			mutex.Lock()
 			data[count] = elem.Value.(int)
+			mutex.Unlock()
+
 			count++ // !!
 		}
 
-		radixSort(data, prev, count, position-1)
+		go func() {
+			radixSort(data, prev, count, position-1)
+			wg.Done()
+		}()
 
 		prev = count
 	}
+
+	wg.Wait()
 }
