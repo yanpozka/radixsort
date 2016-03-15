@@ -55,23 +55,28 @@ func TestAmountDigits(t *testing.T) {
 }
 
 func TestRadixSort(t *testing.T) {
-	a := []int{89, 5, 1, 623, 47, 11}
+	a := []int{89, 5, 1, 623, 47, 11, 2, 3}
 	RadixSort(a)
 
-	assert.Equal(t, []int{1, 5, 11, 47, 89, 623}, a, "Array A should be ordered")
+	assert.Equal(t, []int{1, 2, 3, 5, 11, 47, 89, 623}, a, "Array A should be ordered")
 
 	b := []int{1, 12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	RadixSort(b)
 
-	assert.Equal(t, []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 12}, b, "Array b should be ordered")
+	assert.Equal(t, []int{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 12}, b, "Array B should be ordered")
+
+	c := []int{12, 89, 23, 12, 11, 22}
+	RadixSort(c)
+
+	assert.Equal(t, []int{11, 12, 12, 22, 23, 89}, c, "Array C should be ordered")
 
 	start := time.Now()
 	RadixSort(arrayRadixSort)
-	t.Logf("%v", time.Now().Sub(start))
+	t.Logf("RadixSort %v", time.Now().Sub(start))
 
 	start = time.Now()
 	sort.Sort(sort.IntSlice(arraySort))
-	t.Logf("%v", time.Now().Sub(start))
+	t.Logf("sort.Sort %v", time.Now().Sub(start))
 }
 
 func BenchmarkRadixSort(b *testing.B) {
